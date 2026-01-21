@@ -37,6 +37,14 @@ go run ./cmd/visum-serve
 
 ## Usage
 
+## Screenshots
+
+_Placeholders (drop images in later):_
+
+![Screenshot - Cardioid](assets/screens/cardioid.png)
+![Screenshot - High multiplier](assets/screens/high-multiplier.png)
+![Screenshot - Haeckel palette](assets/screens/haeckel-palette.png)
+
 ### Geometry
 - **Points (N)**: Number of points around the circle.
 - **Multiplier (k)**: Multiplies each index before mapping back to the circle.
@@ -58,6 +66,17 @@ go run ./cmd/visum-serve
 - Choose the target (lines, multiplier, points).
 - Set the step amount.
 - Use Step + / Step - to move manually, even while paused.
+
+## Mathematical Notes
+This visualization maps each point `n` on the circle to `k * n (mod N)`. The modulo keeps the mapping on the circle and produces repeating symmetries tied to the arithmetic structure of `N` and `k`.
+
+The cardioid is the envelope of chords obtained by connecting each point to its double. Other multipliers yield related envelopes (such as nephroids), and fractional multipliers create intricate woven curves.
+
+### Further Reading
+- Cardioid times-table chords: https://divisbyzero.com/2018/04/02/i-heart-cardioids/
+- Interactive modular circle explainer: https://www.redblobgames.com/x/1847-mathologer-modulo-circle/
+- Modular arithmetic overview: https://en.wikipedia.org/wiki/Modular_arithmetic
+- Cardioid geometry: https://en.wikipedia.org/wiki/Cardioid
 
 ## Architecture
 This repo uses a hexagonal architecture:

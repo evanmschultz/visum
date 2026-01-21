@@ -59,6 +59,7 @@ type Engine struct {
 	animations Animations
 	running    bool
 	step       StepConfig
+	reverse    bool
 }
 
 // NewEngine creates a new engine with default settings.
@@ -110,6 +111,11 @@ func (e *Engine) ToggleRunning() {
 	e.running = !e.running
 }
 
+// SetReverse sets the animation direction (false = forward, true = reverse).
+func (e *Engine) SetReverse(reverse bool) {
+	e.reverse = reverse
+}
+
 // SetStepTarget sets the target for manual stepping.
 func (e *Engine) SetStepTarget(target StepTarget) {
 	e.step.Target = target
@@ -159,8 +165,12 @@ func (e *Engine) Update(dt float64) {
 	if !e.running {
 		return
 	}
-	if dt <= 0 {
+	if dt == 0 {
 		return
+	}
+
+	if e.reverse {
+		dt = -dt
 	}
 
 	if e.animations.Lines.Settings.Enabled {

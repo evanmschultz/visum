@@ -54,6 +54,8 @@ func TestControllerSyncToDOM(t *testing.T) {
 		"points-anim-loop":    newInput("", false),
 		"points-anim-pingpong": newInput("", false),
 		"play-toggle":   newInput("", false),
+		"reverse-toggle": newInput("", false),
+		"live-readout":  newInput("", false),
 	}
 
 	controller.SyncToDOM()
@@ -193,10 +195,11 @@ func TestControllerBind(t *testing.T) {
 		"points", "multiplier", "rotation", "start-index", "line-count", "line-count-all",
 		"show-circle", "show-points", "show-labels", "label-step", "line-width", "point-radius",
 		"bg-color", "line-color", "circle-color", "point-color", "label-color",
-		"play-toggle", "step-forward", "step-back", "step-target", "step-amount", "reset-params",
+		"play-toggle", "reverse-toggle", "step-forward", "step-back", "step-target", "step-amount", "reset-params",
 		"line-anim-enable", "line-anim-start", "line-anim-end", "line-anim-speed", "line-anim-loop", "line-anim-pingpong",
 		"mult-anim-enable", "mult-anim-start", "mult-anim-end", "mult-anim-speed", "mult-anim-loop", "mult-anim-pingpong",
 		"points-anim-enable", "points-anim-start", "points-anim-end", "points-anim-speed", "points-anim-loop", "points-anim-pingpong",
+		"live-readout",
 	}
 
 	elements := make(map[string]js.Value, len(ids))
@@ -231,6 +234,42 @@ func TestReadCheckboxAndFormatFloat(t *testing.T) {
 	}
 }
 
+func TestReadoutFormatting(t *testing.T) {
+	if got := formatNumber(12.3456, &CanvasRenderer{cssSize: core.Size{Width: 400}}); got != "12.35" {
+		t.Fatalf("expected compact format, got %q", got)
+	}
+	if got := formatNumber(123.456, nil); got != "123.5" {
+		t.Fatalf("expected reduced precision, got %q", got)
+	}
+	if got := joinParts([]string{"k=2", "N=200"}); got != "k=2 | N=200" {
+		t.Fatalf("unexpected join output: %q", got)
+	}
+}
+
+func TestUpdateReadout(t *testing.T) {
+	engine := app.NewEngine(core.DefaultParams())
+	engine.SetMultiplierAnimation(app.AnimationSettings{Enabled: true})
+	engine.SetLineAnimation(app.AnimationSettings{Enabled: true})
+
+	controller := NewController(engine, &CanvasRenderer{cssSize: core.Size{Width: 900}})
+	controller.elements = map[string]js.Value{
+		"live-readout": newInput("", false),
+	}
+
+	controller.updateReadout(engine.Snapshot())
+	if got := controller.elements["live-readout"].Get("textContent").String(); got == "" {
+		t.Fatalf("expected readout to be populated")
+	}
+
+	engine.SetMultiplierAnimation(app.AnimationSettings{Enabled: false})
+	engine.SetLineAnimation(app.AnimationSettings{Enabled: false})
+	engine.SetPointAnimation(app.AnimationSettings{Enabled: false})
+	controller.updateReadout(engine.Snapshot())
+	if got := controller.elements["live-readout"].Get("textContent").String(); got == "" {
+		t.Fatalf("expected readout to include k")
+	}
+}
+
 func TestControllerSetters(t *testing.T) {
 	js.Global().Set("document", js.ValueOf(map[string]interface{}{"activeElement": js.Null()}))
 
@@ -241,6 +280,7 @@ func TestControllerSetters(t *testing.T) {
 		"line-count-all": newInput("", false),
 		"bg-color":      newInput("#000000", false),
 		"step-target":   newSelect("lines"),
+		"live-readout":  newInput("", false),
 	}
 
 	controller.setInputValue("points", 12)
@@ -277,6 +317,69 @@ func TestBindColor(t *testing.T) {
 
 	if engine.Snapshot().Params.Colors.Background != "#abcdef" {
 		t.Fatalf("expected background color to update")
+	}
+}
+
+func TestBindStepButtonHold(t *testing.T) {
+	js.Global().Set("document", js.ValueOf(map[string]interface{}{"activeElement": js.Null()}))
+
+	engine := app.NewEngine(core.DefaultParams())
+	engine.SetLineCount(10)
+	controller := NewController(engine, nil)
+
+	handlers := map[string]js.Value{}
+	stepEl := stubElement(t, "", false, handlers)
+	controller.elements = map[string]js.Value{"step-forward": stepEl}
+
+	var timeoutFn js.Value
+	var intervalFn js.Value
+
+	setTimeout := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		timeoutFn = args[0]
+		return js.ValueOf(1)
+	})
+	setInterval := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		intervalFn = args[0]
+		return js.ValueOf(2)
+	})
+	clearTimeout := js.FuncOf(func(this js.Value, args []js.Value) interface{} { return nil })
+	clearInterval := js.FuncOf(func(this js.Value, args []js.Value) interface{} { return nil })
+
+	js.Global().Set("setTimeout", setTimeout)
+	js.Global().Set("setInterval", setInterval)
+	js.Global().Set("clearTimeout", clearTimeout)
+	js.Global().Set("clearInterval", clearInterval)
+
+	t.Cleanup(func() {
+		setTimeout.Release()
+		setInterval.Release()
+		clearTimeout.Release()
+		clearInterval.Release()
+	})
+
+	controller.bindStepButton("step-forward", 1)
+
+	handlers["click"].Invoke()
+	if engine.Snapshot().Params.LineCount != 11 {
+		t.Fatalf("expected click to step once")
+	}
+
+	prevent := js.FuncOf(func(this js.Value, args []js.Value) interface{} { return nil })
+	t.Cleanup(func() { prevent.Release() })
+	event := js.ValueOf(map[string]interface{}{"preventDefault": prevent})
+	handlers["pointerdown"].Invoke(event)
+	if !timeoutFn.Truthy() {
+		t.Fatalf("expected hold timeout to be set")
+	}
+	timeoutFn.Invoke()
+	if !intervalFn.Truthy() {
+		t.Fatalf("expected interval to be set")
+	}
+	intervalFn.Invoke()
+	handlers["pointerup"].Invoke(event)
+
+	if engine.Snapshot().Params.LineCount < 13 {
+		t.Fatalf("expected hold to step multiple times")
 	}
 }
 

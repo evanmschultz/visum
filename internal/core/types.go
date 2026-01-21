@@ -41,10 +41,10 @@ type Colors struct {
 
 // Params defines the user-controlled parameters for rendering.
 type Params struct {
-	PointCount int
-	Multiplier float64
+	PointCount  int
+	Multiplier  float64
 	RotationDeg float64
-	StartIndex int
+	StartIndex  int
 	// LineCount is the number of lines to draw. Use -1 to draw all lines.
 	LineCount int
 
@@ -53,7 +53,7 @@ type Params struct {
 	ShowLabels bool
 	LabelStep  int
 
-	LineWidth  float64
+	LineWidth   float64
 	PointRadius float64
 
 	Colors Colors
@@ -70,23 +70,23 @@ type Frame struct {
 // DefaultParams returns a baseline configuration for the app.
 func DefaultParams() Params {
 	return Params{
-		PointCount: 200,
-		Multiplier: 2,
+		PointCount:  200,
+		Multiplier:  2,
 		RotationDeg: 0,
-		StartIndex: 0,
-		LineCount: -1,
-		ShowCircle: true,
-		ShowPoints: false,
-		ShowLabels: false,
-		LabelStep: 10,
-		LineWidth: 1.0,
-		PointRadius: 1.5,
+		StartIndex:  0,
+		LineCount:   -1,
+		ShowCircle:  true,
+		ShowPoints:  true,
+		ShowLabels:  false,
+		LabelStep:   10,
+		LineWidth:   1.0,
+		PointRadius: 1.9,
 		Colors: Colors{
-			Background: "#0b0f1a",
-			Line: "#3a6ff7",
-			Circle: "#ff4d4d",
-			Point: "#f2f4f8",
-			Label: "#f2f4f8",
+			Background: "#fffdfb",
+			Line:       "#2d2a26",
+			Circle:     "#8b3c2e",
+			Point:      "#c9866e",
+			Label:      "#3f3a34",
 		},
 	}
 }

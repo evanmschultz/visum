@@ -199,6 +199,22 @@ func TestAnimationNegativeSpeed(t *testing.T) {
 	}
 }
 
+func TestEngineReverse(t *testing.T) {
+	engine := NewEngine(core.DefaultParams())
+	engine.SetMultiplierAnimation(AnimationSettings{Enabled: true, Start: 0, End: 10, Speed: 1})
+	engine.SetRunning(true)
+	engine.Update(1)
+	forwardValue := engine.Snapshot().Params.Multiplier
+
+	engine.SetReverse(true)
+	engine.Update(1)
+	reversedValue := engine.Snapshot().Params.Multiplier
+
+	if reversedValue >= forwardValue {
+		t.Fatalf("expected reversed animation to move backward")
+	}
+}
+
 func TestStepLinesFromAll(t *testing.T) {
 	engine := NewEngine(core.DefaultParams())
 	engine.SetLineAll(true)

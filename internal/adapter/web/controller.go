@@ -3,6 +3,7 @@
 package web
 
 import (
+	"math"
 	"strconv"
 	"syscall/js"
 
@@ -17,15 +18,25 @@ type Controller struct {
 	renderer   *CanvasRenderer
 	elements   map[string]js.Value
 	callbacks  []js.Func
+	holdStates map[string]*holdState
+	reverse    bool
+}
+
+type holdState struct {
+	holdTimeout  js.Value
+	interval     js.Value
+	holding      bool
+	consumeClick bool
 }
 
 // NewController creates a controller for the UI.
 func NewController(engine *app.Engine, renderer *CanvasRenderer) *Controller {
 	return &Controller{
-		doc:      js.Global().Get("document"),
-		engine:   engine,
-		renderer: renderer,
-		elements: make(map[string]js.Value),
+		doc:        js.Global().Get("document"),
+		engine:     engine,
+		renderer:   renderer,
+		elements:   make(map[string]js.Value),
+		holdStates: make(map[string]*holdState),
 	}
 }
 
@@ -35,10 +46,11 @@ func (c *Controller) Bind() {
 		"points", "multiplier", "rotation", "start-index", "line-count", "line-count-all",
 		"show-circle", "show-points", "show-labels", "label-step", "line-width", "point-radius",
 		"bg-color", "line-color", "circle-color", "point-color", "label-color",
-		"play-toggle", "step-forward", "step-back", "step-target", "step-amount", "reset-params",
+		"play-toggle", "reverse-toggle", "step-forward", "step-back", "step-target", "step-amount", "reset-params",
 		"line-anim-enable", "line-anim-start", "line-anim-end", "line-anim-speed", "line-anim-loop", "line-anim-pingpong",
 		"mult-anim-enable", "mult-anim-start", "mult-anim-end", "mult-anim-speed", "mult-anim-loop", "mult-anim-pingpong",
 		"points-anim-enable", "points-anim-start", "points-anim-end", "points-anim-speed", "points-anim-loop", "points-anim-pingpong",
+		"live-readout",
 	})
 
 	c.bindNumber("points", func(value float64) { c.engine.SetPointCount(int(value)) })
@@ -62,9 +74,13 @@ func (c *Controller) Bind() {
 	c.bindColor("label-color", func(value string) { c.engine.SetLabelColor(value) })
 
 	c.bindButton("play-toggle", func() { c.engine.ToggleRunning() })
-	c.bindButton("step-forward", func() { c.engine.Step(1) })
-	c.bindButton("step-back", func() { c.engine.Step(-1) })
-	c.bindButton("reset-params", func() { c.engine.Reset(core.DefaultParams()) })
+	c.bindButton("reverse-toggle", func() {
+		c.reverse = !c.reverse
+		c.engine.SetReverse(c.reverse)
+	})
+	c.bindStepButton("step-forward", 1)
+	c.bindStepButton("step-back", -1)
+	c.bindButton("reset-params", func() { c.resetToDefaults() })
 
 	c.bindSelect("step-target", func(value string) {
 		switch value {
@@ -165,6 +181,16 @@ func (c *Controller) SyncToDOM() {
 	if el, ok := c.elements["play-toggle"]; ok {
 		el.Set("textContent", playLabel)
 	}
+
+	reverseLabel := "Reverse"
+	if c.reverse {
+		reverseLabel = "Forward"
+	}
+	if el, ok := c.elements["reverse-toggle"]; ok {
+		el.Set("textContent", reverseLabel)
+	}
+
+	c.updateReadout(snapshot)
 }
 
 func (c *Controller) cacheElements(ids []string) {
@@ -226,6 +252,109 @@ func (c *Controller) bindButton(id string, apply func()) {
 	})
 	el.Call("addEventListener", "click", cb)
 	c.callbacks = append(c.callbacks, cb)
+}
+
+func (c *Controller) bindStepButton(id string, direction int) {
+	el, ok := c.elements[id]
+	if !ok {
+		return
+	}
+
+	state := &holdState{}
+	c.holdStates[id] = state
+
+	startRepeat := func() {
+		state.holding = true
+		state.consumeClick = true
+		c.engine.Step(direction)
+		intervalFunc := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+			c.engine.Step(direction)
+			return nil
+		})
+		state.interval = js.Global().Call("setInterval", intervalFunc, 60)
+		c.callbacks = append(c.callbacks, intervalFunc)
+	}
+
+	start := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if len(args) > 0 && args[0].Truthy() && args[0].Get("pointerId").Truthy() {
+			el.Call("setPointerCapture", args[0].Get("pointerId"))
+		}
+		if state.holdTimeout.Truthy() || state.interval.Truthy() {
+			return nil
+		}
+		state.consumeClick = false
+		timeoutFunc := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+			startRepeat()
+			return nil
+		})
+		state.holdTimeout = js.Global().Call("setTimeout", timeoutFunc, 150)
+		c.callbacks = append(c.callbacks, timeoutFunc)
+		return nil
+	})
+
+	stop := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if state.holdTimeout.Truthy() {
+			js.Global().Call("clearTimeout", state.holdTimeout)
+			state.holdTimeout = js.Undefined()
+		}
+		if state.interval.Truthy() {
+			js.Global().Call("clearInterval", state.interval)
+			state.interval = js.Undefined()
+		}
+		state.holding = false
+		return nil
+	})
+
+	click := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		if state.consumeClick {
+			state.consumeClick = false
+			return nil
+		}
+		c.engine.Step(direction)
+		return nil
+	})
+
+	el.Call("addEventListener", "pointerdown", start)
+	el.Call("addEventListener", "pointerup", stop)
+	el.Call("addEventListener", "pointerleave", stop)
+	el.Call("addEventListener", "pointercancel", stop)
+	el.Call("addEventListener", "lostpointercapture", stop)
+	el.Call("addEventListener", "mousedown", start)
+	el.Call("addEventListener", "mouseup", stop)
+	el.Call("addEventListener", "mouseleave", stop)
+	el.Call("addEventListener", "touchstart", start)
+	el.Call("addEventListener", "touchend", stop)
+	el.Call("addEventListener", "touchcancel", stop)
+	el.Call("addEventListener", "click", click)
+
+	c.callbacks = append(c.callbacks, start, stop, click)
+}
+
+func (c *Controller) resetToDefaults() {
+	c.resetInputsToDefault()
+	c.engine.Reset(core.DefaultParams())
+	c.reverse = false
+	c.engine.SetReverse(false)
+	c.SyncFromDOM()
+	c.SyncToDOM()
+}
+
+func (c *Controller) resetInputsToDefault() {
+	for _, el := range c.elements {
+		if el.IsNull() || el.IsUndefined() {
+			continue
+		}
+		switch el.Get("tagName").String() {
+		case "INPUT":
+			if el.Get("type").String() == "checkbox" {
+				el.Set("checked", el.Get("defaultChecked"))
+			} else {
+				el.Set("value", el.Get("defaultValue"))
+			}
+		case "SELECT":
+			el.Set("value", el.Get("defaultValue"))
+		}
+	}
 }
 
 func (c *Controller) bindSelect(id string, apply func(value string)) {
@@ -373,6 +502,26 @@ func (c *Controller) setAnimationInputs(prefix string, settings app.AnimationSet
 	c.setCheckbox(prefix+"-pingpong", settings.PingPong)
 }
 
+func (c *Controller) updateReadout(snapshot app.Snapshot) {
+	el, ok := c.elements["live-readout"]
+	if !ok {
+		return
+	}
+	parts := make([]string, 0, 3)
+	parts = append(parts, "k="+formatNumber(snapshot.Params.Multiplier, c.renderer))
+	if snapshot.Animations.Points.Settings.Enabled {
+		parts = append(parts, "N="+formatInt(snapshot.Params.PointCount))
+	}
+	if snapshot.Animations.Lines.Settings.Enabled {
+		lines := snapshot.Params.LineCount
+		if lines < 0 {
+			lines = snapshot.Params.PointCount
+		}
+		parts = append(parts, "lines="+formatInt(lines))
+	}
+	el.Set("textContent", joinParts(parts))
+}
+
 func readFloat(el js.Value) float64 {
 	value := el.Get("value").String()
 	parsed, err := strconv.ParseFloat(value, 64)
@@ -391,6 +540,38 @@ func readCheckbox(el js.Value) bool {
 
 func formatFloat(value float64) string {
 	return strconv.FormatFloat(value, 'f', -1, 64)
+}
+
+func formatInt(value int) string {
+	return strconv.Itoa(value)
+}
+
+func formatNumber(value float64, renderer *CanvasRenderer) string {
+	width := 800.0
+	if renderer != nil {
+		if size := renderer.Size(); size.Width > 0 {
+			width = size.Width
+		}
+	}
+	precision := 3
+	if width < 520 {
+		precision = 2
+	}
+	if math.Abs(value) >= 100 {
+		precision = 1
+	}
+	return strconv.FormatFloat(value, 'f', precision, 64)
+}
+
+func joinParts(parts []string) string {
+	if len(parts) == 1 {
+		return parts[0]
+	}
+	result := parts[0]
+	for i := 1; i < len(parts); i++ {
+		result += " | " + parts[i]
+	}
+	return result
 }
 
 func stepTargetValue(target app.StepTarget) string {

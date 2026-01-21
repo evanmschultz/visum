@@ -1,4 +1,5 @@
 set shell := ["/bin/sh", "-c"]
+set env := {"GOCACHE": "{{justfile_directory()}}/.go-cache"}
 
 # Default task
 _default:
