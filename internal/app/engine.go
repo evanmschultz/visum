@@ -70,6 +70,7 @@ func NewEngine(params core.Params) *Engine {
 			Target: StepLines,
 			Amount: 1,
 		},
+		running: true,
 	}
 	engine.animations = Animations{
 		Lines: Animation{Settings: AnimationSettings{Enabled: false, Start: 0, End: float64(engine.params.PointCount), Speed: 60}},

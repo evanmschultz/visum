@@ -165,6 +165,7 @@ func TestEngineStepPoints(t *testing.T) {
 
 func TestUpdateNoRun(t *testing.T) {
 	engine := NewEngine(core.DefaultParams())
+	engine.SetRunning(false)
 	engine.SetLineAnimation(AnimationSettings{Enabled: true, Start: 0, End: 5, Speed: 10})
 	before := engine.Snapshot().Params.LineCount
 	engine.Update(1)

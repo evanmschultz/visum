@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Visum</title>
+    <title>VISUM</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -11,8 +11,8 @@
     <div class="page">
       <div class="sticky-eyebrow">
         <span class="sticky-title">
-          <span class="sticky-word">Visum</span>
-          <span class="sticky-subtitle"> · Observations in Number</span>
+          <span class="sticky-word">VISUM</span>
+          <span class="sticky-subtitle"> · OBSERVATIONS IN NUMBER</span>
         </span>
         <div class="header-actions">
           <button id="menu-toggle" class="ghost icon-button header-menu-toggle header-action" type="button" aria-label="Open menu">
@@ -21,12 +21,12 @@
             </svg>
           </button>
           <div class="header-actions-list" id="header-actions-list">
-            <button id="play-toggle" class="primary header-action" type="button">Play</button>
-            <button id="reverse-toggle" class="ghost header-action" type="button">Reverse</button>
-            <button id="step-back" class="ghost header-action" type="button">Step -</button>
-            <button id="step-forward" class="ghost header-action" type="button">Step +</button>
-            <button id="reset-params" class="ghost header-action" type="button">Reset</button>
-            <button id="toggle-controls" class="ghost header-action" type="button">Hide Controls</button>
+            <button id="play-toggle" class="primary header-action" type="button">PLAY</button>
+            <button id="reverse-toggle" class="ghost header-action" type="button">REVERSE</button>
+            <button id="step-back" class="ghost header-action step-button" type="button">STEP <span class="step-symbol">-</span></button>
+            <button id="step-forward" class="ghost header-action step-button" type="button">STEP <span class="step-symbol">+</span></button>
+            <button id="reset-params" class="ghost header-action" type="button">RESET</button>
+            <button id="toggle-controls" class="ghost header-action" type="button">HIDE CONTROLS</button>
             <button id="toggle-theme" class="ghost icon-button header-action" type="button" aria-label="Toggle theme">
               <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
@@ -41,11 +41,11 @@
       </div>
       <header class="header">
         <div>
-          <h1>Times-Table Circles</h1>
+          <h1>TIMES-TABLE CIRCLES</h1>
           <p class="subtitle">
             A living plate of modular multiplication. Adjust the parameters to see the natural patterns and symmetries in numbers.
           </p>
-          <a class="jump-link" href="#notes">Read more</a>
+          <a class="jump-link" href="#notes">READ MORE</a>
         </div>
       </header>
 
@@ -57,120 +57,120 @@
 
         <aside class="controls">
           <div class="controls-header">
-            <span>Controls</span>
+            <span>CONTROLS</span>
           </div>
           <details class="control-group" open>
-            <summary>Geometry</summary>
+            <summary>GEOMETRY</summary>
             <div class="control-content">
               <label>
-                <span>Points (N)</span>
+                <span>POINTS (N)</span>
                 <input id="points" type="number" min="2" max="4000" step="1" value="200" />
               </label>
               <label>
-                <span>Multiplier (k)</span>
+                <span>MULTIPLIER (k)</span>
                 <input id="multiplier" type="number" step="0.01" value="2" />
               </label>
               <label>
-                <span>Rotation (deg)</span>
+                <span>ROTATION (deg)</span>
                 <input id="rotation" type="number" step="1" value="0" />
               </label>
               <label>
-                <span>Start index</span>
+                <span>START INDEX</span>
                 <input id="start-index" type="number" step="1" value="0" />
               </label>
               <div class="inline">
                 <label>
-                  <span>Line count</span>
+                  <span>LINE COUNT</span>
                   <input id="line-count" type="number" min="0" step="1" value="200" />
                 </label>
                 <label class="toggle">
                   <input id="line-count-all" type="checkbox" checked />
-                  <span>All lines</span>
+                  <span>ALL LINES</span>
                 </label>
               </div>
             </div>
           </details>
 
           <details class="control-group" open>
-            <summary>Multiplier Animation</summary>
+            <summary>MULTIPLIER ANIMATION</summary>
             <div class="control-content">
               <label class="toggle">
                 <input id="mult-anim-enable" type="checkbox" checked />
-                <span>Enable</span>
+                <span>ENABLE</span>
               </label>
               <label>
-                <span>Start</span>
+                <span>START</span>
                 <input id="mult-anim-start" type="number" step="0.01" value="2" />
               </label>
               <label>
-                <span>End</span>
+                <span>END</span>
                 <input id="mult-anim-end" type="number" step="0.01" value="200" />
               </label>
               <label>
-                <span>Speed (k/sec)</span>
+                <span>SPEED (k/sec)</span>
                 <input id="mult-anim-speed" type="number" step="0.01" value="0.25" />
               </label>
               <div class="inline">
                 <label class="toggle">
                   <input id="mult-anim-loop" type="checkbox" />
-                  <span>Loop</span>
+                  <span>LOOP</span>
                 </label>
                 <label class="toggle">
                   <input id="mult-anim-pingpong" type="checkbox" checked />
-                  <span>Ping-pong</span>
+                  <span>PING-PONG</span>
                 </label>
               </div>
             </div>
           </details>
 
           <details class="control-group" open>
-            <summary>Appearance</summary>
+            <summary>APPEARANCE</summary>
             <div class="control-content">
               <label>
-                <span>Line width</span>
+                <span>LINE WIDTH</span>
                 <input id="line-width" type="number" step="0.2" value="1" />
               </label>
               <label>
-                <span>Point radius</span>
+                <span>POINT RADIUS</span>
                 <input id="point-radius" type="number" step="0.2" value="1.9" />
               </label>
               <div class="inline">
                 <label class="toggle">
                   <input id="show-circle" type="checkbox" checked />
-                  <span>Show circle</span>
+                  <span>SHOW CIRCLE</span>
                 </label>
                 <label class="toggle">
                   <input id="show-points" type="checkbox" checked />
-                  <span>Show points</span>
+                  <span>SHOW POINTS</span>
                 </label>
                 <label class="toggle">
                   <input id="show-labels" type="checkbox" />
-                  <span>Show labels</span>
+                  <span>SHOW LABELS</span>
                 </label>
               </div>
               <label>
-                <span>Label step</span>
+                <span>LABEL STEP</span>
                 <input id="label-step" type="number" min="1" step="1" value="10" />
               </label>
               <div class="swatches">
                 <label>
-                  <span>Background</span>
+                  <span>BACKGROUND</span>
                   <input id="bg-color" type="color" value="#fffdfb" />
                 </label>
                 <label>
-                  <span>Lines</span>
+                  <span>LINES</span>
                   <input id="line-color" type="color" value="#2d2a26" />
                 </label>
                 <label>
-                  <span>Circle</span>
+                  <span>CIRCLE</span>
                   <input id="circle-color" type="color" value="#8b3c2e" />
                 </label>
                 <label>
-                  <span>Points</span>
+                  <span>POINTS</span>
                   <input id="point-color" type="color" value="#c9866e" />
                 </label>
                 <label>
-                  <span>Labels</span>
+                  <span>LABELS</span>
                   <input id="label-color" type="color" value="#3f3a34" />
                 </label>
               </div>
@@ -178,82 +178,82 @@
           </details>
 
           <details class="control-group" open>
-            <summary>Step Control</summary>
+            <summary>STEP CONTROL</summary>
             <div class="control-content">
               <label>
-                <span>Target</span>
+                <span>TARGET</span>
                 <select id="step-target">
-                  <option value="lines">Lines</option>
-                  <option value="multiplier">Multiplier</option>
-                  <option value="points">Points</option>
+                  <option value="lines">LINES</option>
+                  <option value="multiplier">MULTIPLIER</option>
+                  <option value="points">POINTS</option>
                 </select>
               </label>
               <label>
-                <span>Step amount</span>
+                <span>STEP AMOUNT</span>
                 <input id="step-amount" type="number" step="0.1" value="1" />
               </label>
             </div>
           </details>
 
           <details class="control-group" open>
-            <summary>Line Animation</summary>
+            <summary>LINE ANIMATION</summary>
             <div class="control-content">
               <label class="toggle">
                 <input id="line-anim-enable" type="checkbox" />
-                <span>Enable</span>
+                <span>ENABLE</span>
               </label>
               <label>
-                <span>Start</span>
+                <span>START</span>
                 <input id="line-anim-start" type="number" step="1" value="0" />
               </label>
               <label>
-                <span>End</span>
+                <span>END</span>
                 <input id="line-anim-end" type="number" step="1" value="200" />
               </label>
               <label>
-                <span>Speed (lines/sec)</span>
+                <span>SPEED (lines/sec)</span>
                 <input id="line-anim-speed" type="number" step="1" value="60" />
               </label>
               <div class="inline">
                 <label class="toggle">
                   <input id="line-anim-loop" type="checkbox" checked />
-                  <span>Loop</span>
+                  <span>LOOP</span>
                 </label>
                 <label class="toggle">
                   <input id="line-anim-pingpong" type="checkbox" />
-                  <span>Ping-pong</span>
+                  <span>PING-PONG</span>
                 </label>
               </div>
             </div>
           </details>
 
           <details class="control-group" open>
-            <summary>Points Animation</summary>
+            <summary>POINTS ANIMATION</summary>
             <div class="control-content">
               <label class="toggle">
                 <input id="points-anim-enable" type="checkbox" />
-                <span>Enable</span>
+                <span>ENABLE</span>
               </label>
               <label>
-                <span>Start</span>
+                <span>START</span>
                 <input id="points-anim-start" type="number" step="1" value="100" />
               </label>
               <label>
-                <span>End</span>
+                <span>END</span>
                 <input id="points-anim-end" type="number" step="1" value="400" />
               </label>
               <label>
-                <span>Speed (points/sec)</span>
+                <span>SPEED (points/sec)</span>
                 <input id="points-anim-speed" type="number" step="1" value="20" />
               </label>
               <div class="inline">
                 <label class="toggle">
                   <input id="points-anim-loop" type="checkbox" />
-                  <span>Loop</span>
+                  <span>LOOP</span>
                 </label>
                 <label class="toggle">
                   <input id="points-anim-pingpong" type="checkbox" checked />
-                  <span>Ping-pong</span>
+                  <span>PING-PONG</span>
                 </label>
               </div>
             </div>
@@ -263,8 +263,8 @@
 
       <section class="field-notes" id="notes">
         <div class="notes-heading">
-          <p class="eyebrow">Notes</p>
-          <h2>Why the Symmetries Appear</h2>
+          <p class="eyebrow">NOTES</p>
+          <h2>WHY THE SYMMETRIES APPEAR</h2>
         </div>
         <div class="notes-grid">
           <div>

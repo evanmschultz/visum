@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300&display=swap");
 
 :root {
   color-scheme: light;
@@ -8,9 +8,27 @@
   --ink-soft: #5b5448;
   --accent: #8b3c2e;
   --accent-2: #7b6a4e;
+  --accent-strong: #a24c3c;
+  --accent-contrast: #fff7eb;
   --panel: rgba(255, 255, 255, 0.9);
+  --panel-solid: #fffdfb;
   --panel-border: rgba(45, 42, 38, 0.16);
-  --shadow: 0 12px 28px rgba(41, 34, 24, 0.1);
+  --panel-border-strong: rgba(45, 42, 38, 0.25);
+  --panel-border-stronger: rgba(45, 42, 38, 0.4);
+  --divider: rgba(45, 42, 38, 0.12);
+  --divider-strong: rgba(45, 42, 38, 0.2);
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --button-bg: rgba(255, 255, 255, 0.7);
+  --button-bg-hover: rgba(255, 255, 255, 0.9);
+  --button-ghost-bg: rgba(255, 255, 255, 0.45);
+  --button-primary-from: var(--accent-strong);
+  --button-primary-to: var(--accent);
+  --button-primary-text: var(--accent-contrast);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: var(--panel-border-strong);
+  --checkbox-bg: var(--paper-deep);
+  --checkbox-border: var(--panel-border-stronger);
+  --menu-bg: var(--panel-solid);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,9 +40,27 @@
     --ink-soft: #bfb4a3;
     --accent: #b68a7b;
     --accent-2: #a0927a;
+    --accent-strong: #c08a7a;
+    --accent-contrast: #fff7eb;
     --panel: rgba(22, 21, 19, 0.9);
+    --panel-solid: #141312;
     --panel-border: rgba(233, 227, 216, 0.16);
-    --shadow: 0 12px 28px rgba(5, 4, 3, 0.45);
+    --panel-border-strong: rgba(233, 227, 216, 0.24);
+    --panel-border-stronger: rgba(233, 227, 216, 0.35);
+    --divider: rgba(233, 227, 216, 0.12);
+    --divider-strong: rgba(233, 227, 216, 0.2);
+    --hover-bg: rgba(255, 255, 255, 0.06);
+    --button-bg: rgba(30, 28, 26, 0.9);
+    --button-bg-hover: rgba(38, 35, 32, 0.9);
+    --button-ghost-bg: rgba(26, 24, 22, 0.75);
+    --button-primary-from: var(--accent-strong);
+    --button-primary-to: var(--accent);
+    --button-primary-text: var(--accent-contrast);
+    --input-bg: rgba(26, 24, 22, 0.85);
+    --input-border: var(--panel-border-strong);
+    --checkbox-bg: var(--paper-deep);
+    --checkbox-border: var(--panel-border-stronger);
+    --menu-bg: var(--panel-solid);
   }
 }
 
@@ -36,9 +72,27 @@ body.theme-light {
   --ink-soft: #5b5448;
   --accent: #8b3c2e;
   --accent-2: #7b6a4e;
+  --accent-strong: #a24c3c;
+  --accent-contrast: #fff7eb;
   --panel: rgba(255, 255, 255, 0.9);
+  --panel-solid: #fffdfb;
   --panel-border: rgba(45, 42, 38, 0.16);
-  --shadow: 0 12px 28px rgba(41, 34, 24, 0.1);
+  --panel-border-strong: rgba(45, 42, 38, 0.25);
+  --panel-border-stronger: rgba(45, 42, 38, 0.4);
+  --divider: rgba(45, 42, 38, 0.12);
+  --divider-strong: rgba(45, 42, 38, 0.2);
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --button-bg: rgba(255, 255, 255, 0.7);
+  --button-bg-hover: rgba(255, 255, 255, 0.9);
+  --button-ghost-bg: rgba(255, 255, 255, 0.45);
+  --button-primary-from: var(--accent-strong);
+  --button-primary-to: var(--accent);
+  --button-primary-text: var(--accent-contrast);
+  --input-bg: rgba(255, 255, 255, 0.9);
+  --input-border: var(--panel-border-strong);
+  --checkbox-bg: var(--paper-deep);
+  --checkbox-border: var(--panel-border-stronger);
+  --menu-bg: var(--panel-solid);
 }
 
 body.theme-dark {
@@ -49,49 +103,37 @@ body.theme-dark {
   --ink-soft: #bfb4a3;
   --accent: #b68a7b;
   --accent-2: #a0927a;
+  --accent-strong: #c08a7a;
+  --accent-contrast: #fff7eb;
   --panel: rgba(22, 21, 19, 0.9);
+  --panel-solid: #141312;
   --panel-border: rgba(233, 227, 216, 0.16);
-  --shadow: 0 12px 28px rgba(5, 4, 3, 0.45);
+  --panel-border-strong: rgba(233, 227, 216, 0.24);
+  --panel-border-stronger: rgba(233, 227, 216, 0.35);
+  --divider: rgba(233, 227, 216, 0.12);
+  --divider-strong: rgba(233, 227, 216, 0.2);
+  --hover-bg: rgba(255, 255, 255, 0.06);
+  --button-bg: rgba(30, 28, 26, 0.9);
+  --button-bg-hover: rgba(38, 35, 32, 0.9);
+  --button-ghost-bg: rgba(26, 24, 22, 0.75);
+  --button-primary-from: var(--accent-strong);
+  --button-primary-to: var(--accent);
+  --button-primary-text: var(--accent-contrast);
+  --input-bg: rgba(26, 24, 22, 0.85);
+  --input-border: var(--panel-border-strong);
+  --checkbox-bg: var(--paper-deep);
+  --checkbox-border: var(--panel-border-stronger);
+  --menu-bg: var(--panel-solid);
 }
 
 body.theme-dark {
   background: var(--paper);
 }
 
-body.theme-dark button {
-  background: rgba(30, 28, 26, 0.9);
-  color: var(--ink);
-}
-
-body.theme-dark button.ghost {
-  background: rgba(26, 24, 22, 0.75);
-}
-
-body.theme-dark .header-action {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-body.theme-dark .sticky-eyebrow button {
-  background: transparent;
-}
-
 .sticky-eyebrow .header-action,
 .sticky-eyebrow .icon-button {
   background: transparent !important;
   border: none !important;
-  box-shadow: none !important;
-}
-
-body.theme-dark input,
-body.theme-dark select {
-  background: rgba(26, 24, 22, 0.85);
-}
-
-body.theme-dark .toggle input[type="checkbox"] {
-  border-color: rgba(233, 227, 216, 0.35);
-  background: rgba(26, 24, 22, 0.85);
 }
 
 * {
@@ -103,7 +145,7 @@ body {
   color: var(--ink);
   background: var(--paper);
   font-family: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", serif;
-  font-weight: 400;
+  font-weight: 300;
   min-height: 100vh;
 }
 
@@ -119,7 +161,7 @@ body {
   z-index: 13;
   background: var(--paper);
   padding: 12px 0 10px;
-  border-bottom: 1px solid rgba(45, 42, 38, 0.12);
+  border-bottom: 1px solid var(--divider);
   font-size: clamp(1rem, 1.6vw, 1.5rem);
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -173,7 +215,7 @@ body {
   margin: 8px 0 6px;
   font-size: clamp(1.1rem, 1.8vw, 1.5rem);
   letter-spacing: 0.18em;
-  font-weight: 400;
+  font-weight: 300;
   text-transform: uppercase;
 }
 
@@ -196,7 +238,7 @@ body {
   margin-top: 10px;
   color: var(--accent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .jump-link:hover {
@@ -227,7 +269,6 @@ body {
 .header-action {
   border: none;
   background: transparent;
-  box-shadow: none;
   padding: 6px 4px;
   touch-action: none;
 }
@@ -241,7 +282,6 @@ body {
 .header-actions-list .icon-button {
   background: transparent;
   border: none;
-  box-shadow: none;
   justify-content: flex-start;
   padding-left: 0;
 }
@@ -254,15 +294,23 @@ body {
 .header-actions-list .header-action {
   background: transparent;
   border: none;
-  box-shadow: none;
 }
 
 .header-actions-list .header-action:hover {
   background: transparent;
 }
 
+.step-button {
+  display: inline-flex;
+  align-items: center;
+}
+
+.step-symbol {
+  margin-left: 6px;
+}
+
 .header-action:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--hover-bg);
   transform: none;
 }
 
@@ -308,44 +356,41 @@ body.theme-dark .icon-button .icon-moon {
 
 button {
   border: 1px solid var(--panel-border);
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--button-bg);
   color: var(--ink);
   padding: 10px 18px;
   border-radius: 0;
   cursor: pointer;
-  font-family: "Source Serif 4", serif;
-  font-weight: 500;
+  font-family: inherit;
+  font-weight: 300;
   transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease;
-  box-shadow: 2px 3px 6px rgba(41, 34, 24, 0.12);
   user-select: none;
 }
 
 .sticky-eyebrow button {
   background: transparent !important;
   border: none !important;
-  box-shadow: none !important;
 }
 
 button:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--button-bg-hover);
 }
 
 button.primary {
-  background: linear-gradient(135deg, #a24c3c, var(--accent));
+  background: linear-gradient(135deg, var(--button-primary-from), var(--button-primary-to));
   border: none;
-  color: #fff7eb;
+  color: var(--button-primary-text);
 }
 
 button.ghost {
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--button-ghost-bg);
 }
 
 .header-actions-list .ghost,
 .header-actions-list .primary {
   background: transparent;
   border: none;
-  box-shadow: none;
 }
 
 .layout {
@@ -360,7 +405,6 @@ button.ghost {
   position: relative;
   padding: 0;
   background: var(--paper);
-  box-shadow: 3px 4px 8px rgba(41, 34, 24, 0.1);
   border: 1px solid var(--panel-border);
 }
 
@@ -390,15 +434,14 @@ button.ghost {
   padding: 0;
   margin: 0;
   color: var(--ink);
-  font-weight: 500;
+  font-weight: 300;
 }
 
 .controls-header span {
   display: inline-block;
   width: 100%;
-  background: var(--panel);
+  background: var(--panel-solid);
   border: 1px solid var(--panel-border);
-  box-shadow: 3px 4px 8px rgba(41, 34, 24, 0.08);
   padding: 10px 14px;
 }
 
@@ -406,11 +449,6 @@ button.ghost {
   padding: 14px 16px;
   background: var(--panel);
   border: 1px solid var(--panel-border);
-  box-shadow: 3px 4px 8px rgba(41, 34, 24, 0.08);
-}
-
-.control-group[open] {
-  box-shadow: 3px 4px 8px rgba(41, 34, 24, 0.1);
 }
 
 .control-group summary {
@@ -458,10 +496,11 @@ input,
 select {
   padding: 8px 10px;
   border-radius: 0;
-  border: 1px solid rgba(45, 42, 38, 0.25);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
   color: var(--ink);
-  font-family: "Source Serif 4", serif;
+  font-family: inherit;
+  font-weight: 300;
 }
 
 input[type="checkbox"] {
@@ -477,8 +516,8 @@ input[type="color"] {
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 1px solid rgba(45, 42, 38, 0.4);
-  background: var(--paper-deep);
+  border: 1px solid var(--checkbox-border);
+  background: var(--checkbox-bg);
   display: grid;
   place-content: center;
   border-radius: 0;
@@ -525,14 +564,14 @@ input[type="color"] {
 .field-notes {
   margin-top: 40px;
   padding-top: 24px;
-  border-top: 1px solid rgba(45, 42, 38, 0.2);
+  border-top: 1px solid var(--divider-strong);
 }
 
 .notes-heading h2 {
   margin: 6px 0 16px;
   font-size: clamp(1.3rem, 2vw, 1.8rem);
   letter-spacing: 0.18em;
-  font-weight: 400;
+  font-weight: 300;
   text-transform: uppercase;
 }
 
@@ -592,12 +631,11 @@ body.controls-hidden #visum-canvas {
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
-    background: var(--paper);
+    background: var(--menu-bg);
     border: 1px solid var(--panel-border);
     padding: 10px;
     min-width: 200px;
     max-width: min(92vw, 260px);
-    box-shadow: 3px 4px 8px rgba(41, 34, 24, 0.12);
   }
 
   body.menu-open .header-actions-list {
@@ -620,35 +658,6 @@ body.controls-hidden #visum-canvas {
     display: inline-flex !important;
   }
 
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: var(--paper);
-  }
-
-  button {
-    background: rgba(30, 28, 26, 0.9);
-    color: var(--ink);
-  }
-
-  button.ghost {
-    background: rgba(26, 24, 22, 0.75);
-  }
-
-  input,
-  select {
-    background: rgba(26, 24, 22, 0.85);
-  }
-
-  .toggle input[type="checkbox"] {
-    border-color: rgba(233, 227, 216, 0.35);
-    background: rgba(26, 24, 22, 0.85);
-  }
-
-  .live-readout {
-    color: var(--ink-soft);
-  }
 }
 
 @media (max-width: 980px) {
@@ -698,7 +707,7 @@ body.controls-hidden #visum-canvas {
   left: 12px;
   bottom: 12px;
   padding: 0;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--ink-soft);
   background: transparent;
   border: none;
@@ -706,6 +715,11 @@ body.controls-hidden #visum-canvas {
   font-size: 0.9rem;
   pointer-events: none;
   z-index: 2;
+}
+
+strong,
+b {
+  font-weight: 300;
 }
 
 .sr-only {

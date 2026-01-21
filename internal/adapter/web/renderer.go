@@ -37,7 +37,7 @@ func NewCanvasRenderer(canvasID string) (*CanvasRenderer, error) {
 	return &CanvasRenderer{
 		canvas: canvas,
 		ctx:    ctx,
-		fonts:  "600 12px ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif",
+		fonts:  "300 12px \"Source Serif 4\", \"Iowan Old Style\", \"Palatino Linotype\", serif",
 	}, nil
 }
 
@@ -112,7 +112,7 @@ func (r *CanvasRenderer) Render(frame core.Frame, params core.Params) {
 
 	if params.ShowLabels {
 		fontSize := math.Max(10, frame.Circle.Radius*0.06)
-		r.fonts = fmt.Sprintf("600 %.0fpx ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", fontSize)
+		r.fonts = fmt.Sprintf("300 %.0fpx \"Source Serif 4\", \"Iowan Old Style\", \"Palatino Linotype\", serif", fontSize)
 		ctx.Set("font", r.fonts)
 		ctx.Set("fillStyle", params.Colors.Label)
 		ctx.Set("textAlign", "center")

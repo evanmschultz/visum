@@ -7,7 +7,7 @@ function setupControlsToggle() {
   toggle.addEventListener("click", () => {
     document.body.classList.toggle("controls-hidden");
     const hidden = document.body.classList.contains("controls-hidden");
-    toggle.textContent = hidden ? "Show Controls" : "Hide Controls";
+    toggle.textContent = hidden ? "SHOW CONTROLS" : "HIDE CONTROLS";
   });
 }
 

@@ -99,6 +99,8 @@ func (c *Controller) Bind() {
 	c.bindAnimation("points-anim", func(settings app.AnimationSettings) { c.engine.SetPointAnimation(settings) })
 
 	c.SyncFromDOM()
+	c.engine.SetRunning(true)
+	c.SyncToDOM()
 }
 
 // SyncFromDOM pulls the current UI values into the engine.
@@ -174,17 +176,17 @@ func (c *Controller) SyncToDOM() {
 	c.setAnimationInputs("mult-anim", snapshot.Animations.Multiplier.Settings)
 	c.setAnimationInputs("points-anim", snapshot.Animations.Points.Settings)
 
-	playLabel := "Play"
+	playLabel := "PLAY"
 	if snapshot.Running {
-		playLabel = "Pause"
+		playLabel = "PAUSE"
 	}
 	if el, ok := c.elements["play-toggle"]; ok {
 		el.Set("textContent", playLabel)
 	}
 
-	reverseLabel := "Reverse"
+	reverseLabel := "REVERSE"
 	if c.reverse {
-		reverseLabel = "Forward"
+		reverseLabel = "FORWARD"
 	}
 	if el, ok := c.elements["reverse-toggle"]; ok {
 		el.Set("textContent", reverseLabel)
@@ -517,7 +519,7 @@ func (c *Controller) updateReadout(snapshot app.Snapshot) {
 		if lines < 0 {
 			lines = snapshot.Params.PointCount
 		}
-		parts = append(parts, "lines="+formatInt(lines))
+		parts = append(parts, "LINES="+formatInt(lines))
 	}
 	el.Set("textContent", joinParts(parts))
 }

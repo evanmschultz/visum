@@ -69,8 +69,8 @@ func TestControllerSyncToDOM(t *testing.T) {
 	if !controller.elements["line-count-all"].Get("checked").Bool() {
 		t.Fatalf("expected line-count-all to be checked")
 	}
-	if got := controller.elements["play-toggle"].Get("textContent").String(); got != "Play" {
-		t.Fatalf("expected play button to read Play, got %q", got)
+	if got := controller.elements["play-toggle"].Get("textContent").String(); got != "PAUSE" {
+		t.Fatalf("expected play button to read PAUSE, got %q", got)
 	}
 }
 
@@ -184,6 +184,7 @@ func TestControllerBinders(t *testing.T) {
 	buttonEl := stubElement(t, "", false, buttonHandlers)
 	controller.elements["play-toggle"] = buttonEl
 	controller.bindButton("play-toggle", func() { controller.engine.ToggleRunning() })
+	engine.SetRunning(false)
 	buttonHandlers["click"].Invoke()
 	if !engine.Snapshot().Running {
 		t.Fatalf("expected running true")
