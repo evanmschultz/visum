@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Visum</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Visum</p>
+          <h1>Times-Table Circles</h1>
+          <p class="subtitle">Explore modular multiplication patterns with live controls and animation.</p>
+        </div>
+        <div class="header-actions">
+          <button id="play-toggle" class="primary">Play</button>
+          <button id="step-back" class="ghost">Step -</button>
+          <button id="step-forward" class="ghost">Step +</button>
+          <button id="reset-params" class="ghost">Reset</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="canvas-panel">
+          <canvas id="visum-canvas"></canvas>
+          <div class="canvas-note">Drag the browser window to resize. All rendering is in Go + WebAssembly.</div>
+        </section>
+
+        <aside class="controls">
+          <section class="control-group">
+            <h2>Geometry</h2>
+            <label>
+              <span>Points (N)</span>
+              <input id="points" type="number" min="2" max="4000" step="1" value="200" />
+            </label>
+            <label>
+              <span>Multiplier (k)</span>
+              <input id="multiplier" type="number" step="0.01" value="2" />
+            </label>
+            <label>
+              <span>Rotation (deg)</span>
+              <input id="rotation" type="number" step="1" value="0" />
+            </label>
+            <label>
+              <span>Start index</span>
+              <input id="start-index" type="number" step="1" value="0" />
+            </label>
+            <div class="inline">
+              <label>
+                <span>Line count</span>
+                <input id="line-count" type="number" min="0" step="1" value="200" />
+              </label>
+              <label class="toggle">
+                <input id="line-count-all" type="checkbox" checked />
+                <span>All lines</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="control-group">
+            <h2>Appearance</h2>
+            <label>
+              <span>Line width</span>
+              <input id="line-width" type="number" step="0.2" value="1" />
+            </label>
+            <label>
+              <span>Point radius</span>
+              <input id="point-radius" type="number" step="0.2" value="1.5" />
+            </label>
+            <div class="inline">
+              <label class="toggle">
+                <input id="show-circle" type="checkbox" checked />
+                <span>Show circle</span>
+              </label>
+              <label class="toggle">
+                <input id="show-points" type="checkbox" />
+                <span>Show points</span>
+              </label>
+              <label class="toggle">
+                <input id="show-labels" type="checkbox" />
+                <span>Show labels</span>
+              </label>
+            </div>
+            <label>
+              <span>Label step</span>
+              <input id="label-step" type="number" min="1" step="1" value="10" />
+            </label>
+            <div class="swatches">
+              <label>
+                <span>Background</span>
+                <input id="bg-color" type="color" value="#0b0f1a" />
+              </label>
+              <label>
+                <span>Lines</span>
+                <input id="line-color" type="color" value="#3a6ff7" />
+              </label>
+              <label>
+                <span>Circle</span>
+                <input id="circle-color" type="color" value="#ff4d4d" />
+              </label>
+              <label>
+                <span>Points</span>
+                <input id="point-color" type="color" value="#f2f4f8" />
+              </label>
+              <label>
+                <span>Labels</span>
+                <input id="label-color" type="color" value="#f2f4f8" />
+              </label>
+            </div>
+          </section>
+
+          <section class="control-group">
+            <h2>Step Control</h2>
+            <label>
+              <span>Target</span>
+              <select id="step-target">
+                <option value="lines">Lines</option>
+                <option value="multiplier">Multiplier</option>
+                <option value="points">Points</option>
+              </select>
+            </label>
+            <label>
+              <span>Step amount</span>
+              <input id="step-amount" type="number" step="0.1" value="1" />
+            </label>
+          </section>
+
+          <section class="control-group">
+            <h2>Line Animation</h2>
+            <label class="toggle">
+              <input id="line-anim-enable" type="checkbox" />
+              <span>Enable</span>
+            </label>
+            <label>
+              <span>Start</span>
+              <input id="line-anim-start" type="number" step="1" value="0" />
+            </label>
+            <label>
+              <span>End</span>
+              <input id="line-anim-end" type="number" step="1" value="200" />
+            </label>
+            <label>
+              <span>Speed (lines/sec)</span>
+              <input id="line-anim-speed" type="number" step="1" value="60" />
+            </label>
+            <div class="inline">
+              <label class="toggle">
+                <input id="line-anim-loop" type="checkbox" checked />
+                <span>Loop</span>
+              </label>
+              <label class="toggle">
+                <input id="line-anim-pingpong" type="checkbox" />
+                <span>Ping-pong</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="control-group">
+            <h2>Multiplier Animation</h2>
+            <label class="toggle">
+              <input id="mult-anim-enable" type="checkbox" />
+              <span>Enable</span>
+            </label>
+            <label>
+              <span>Start</span>
+              <input id="mult-anim-start" type="number" step="0.01" value="2" />
+            </label>
+            <label>
+              <span>End</span>
+              <input id="mult-anim-end" type="number" step="0.01" value="8" />
+            </label>
+            <label>
+              <span>Speed (k/sec)</span>
+              <input id="mult-anim-speed" type="number" step="0.01" value="0.25" />
+            </label>
+            <div class="inline">
+              <label class="toggle">
+                <input id="mult-anim-loop" type="checkbox" />
+                <span>Loop</span>
+              </label>
+              <label class="toggle">
+                <input id="mult-anim-pingpong" type="checkbox" checked />
+                <span>Ping-pong</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="control-group">
+            <h2>Points Animation</h2>
+            <label class="toggle">
+              <input id="points-anim-enable" type="checkbox" />
+              <span>Enable</span>
+            </label>
+            <label>
+              <span>Start</span>
+              <input id="points-anim-start" type="number" step="1" value="100" />
+            </label>
+            <label>
+              <span>End</span>
+              <input id="points-anim-end" type="number" step="1" value="400" />
+            </label>
+            <label>
+              <span>Speed (points/sec)</span>
+              <input id="points-anim-speed" type="number" step="1" value="20" />
+            </label>
+            <div class="inline">
+              <label class="toggle">
+                <input id="points-anim-loop" type="checkbox" />
+                <span>Loop</span>
+              </label>
+              <label class="toggle">
+                <input id="points-anim-pingpong" type="checkbox" checked />
+                <span>Ping-pong</span>
+              </label>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script src="wasm_exec.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
