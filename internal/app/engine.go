@@ -73,9 +73,9 @@ func NewEngine(params core.Params) *Engine {
 		running: true,
 	}
 	engine.animations = Animations{
-		Lines: Animation{Settings: AnimationSettings{Enabled: false, Start: 0, End: float64(engine.params.PointCount), Speed: 60}},
+		Lines:      Animation{Settings: AnimationSettings{Enabled: false, Start: 0, End: float64(engine.params.PointCount), Speed: 60}},
 		Multiplier: Animation{Settings: AnimationSettings{Enabled: false, Start: engine.params.Multiplier, End: engine.params.Multiplier + 5, Speed: 0.2}},
-		Points: Animation{Settings: AnimationSettings{Enabled: false, Start: float64(engine.params.PointCount), End: float64(engine.params.PointCount), Speed: 1}},
+		Points:     Animation{Settings: AnimationSettings{Enabled: false, Start: float64(engine.params.PointCount), End: float64(engine.params.PointCount), Speed: 1}},
 	}
 	engine.animations.Lines.Value = float64(engine.params.PointCount)
 	engine.animations.Multiplier.Value = engine.params.Multiplier
@@ -338,6 +338,25 @@ func (e *Engine) applyAnimationSettings(animation *Animation, settings Animation
 	if animation.Value < minV || animation.Value > maxV {
 		animation.Value = settings.Start
 		animation.Forward = true
+	}
+}
+
+// ResetAnimationsToStart resets enabled animations to their start values.
+func (e *Engine) ResetAnimationsToStart() {
+	if e.animations.Lines.Settings.Enabled {
+		e.animations.Lines.Value = e.animations.Lines.Settings.Start
+		e.animations.Lines.Forward = true
+		e.SetLineCount(int(math.Round(e.animations.Lines.Value)))
+	}
+	if e.animations.Multiplier.Settings.Enabled {
+		e.animations.Multiplier.Value = e.animations.Multiplier.Settings.Start
+		e.animations.Multiplier.Forward = true
+		e.SetMultiplier(e.animations.Multiplier.Value)
+	}
+	if e.animations.Points.Settings.Enabled {
+		e.animations.Points.Value = e.animations.Points.Settings.Start
+		e.animations.Points.Forward = true
+		e.SetPointCount(int(math.Round(e.animations.Points.Value)))
 	}
 }
 

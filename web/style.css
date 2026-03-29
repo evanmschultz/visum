@@ -377,6 +377,11 @@ button:hover {
   background: var(--button-bg-hover);
 }
 
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 button.primary {
   background: linear-gradient(135deg, var(--button-primary-from), var(--button-primary-to));
   border: none;
@@ -488,6 +493,12 @@ label {
   color: var(--ink-soft);
 }
 
+label .label-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 label span {
   color: var(--ink);
 }
@@ -541,6 +552,170 @@ input[type="color"] {
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.control-subgroup {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--panel-solid);
+  border: 1px solid var(--panel-border);
+}
+
+.control-subgroup summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.control-subgroup summary::after {
+  content: "▾";
+  font-size: 0.9rem;
+  color: var(--accent-2);
+}
+
+.control-subgroup[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.control-subgroup summary::-webkit-details-marker {
+  display: none;
+}
+
+.export-actions button {
+  padding: 8px 12px;
+}
+
+.export-actions {
+  margin: 6px 0 10px;
+}
+
+.export-actions + .export-actions {
+  margin-top: 2px;
+}
+
+.export-actions button:disabled {
+  opacity: 0.35;
+  background: transparent;
+}
+
+.export-actions button.is-active {
+  opacity: 1;
+}
+
+.export-actions button.is-working {
+  cursor: progress;
+}
+
+.export-progress {
+  margin-top: 10px;
+  height: 6px;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.export-progress.is-active {
+  opacity: 1;
+}
+
+.export-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-2);
+  transition: width 0.2s ease;
+}
+
+.export-progress.is-indeterminate .export-progress-bar {
+  width: 40%;
+  animation: exportPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes exportPulse {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+.export-guard {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 14, 13, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.export-guard.is-active {
+  display: flex;
+}
+
+.export-guard-card {
+  background: var(--panel-solid);
+  border: 1px solid var(--panel-border);
+  padding: 18px 20px;
+  width: min(90vw, 360px);
+  text-align: center;
+}
+
+.export-guard-title {
+  margin: 0 0 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.export-guard-body {
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+}
+
+.export-guard-actions {
+  justify-content: center;
+}
+
+.hint-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--panel-border);
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  line-height: 1;
+  border-radius: 0;
+  cursor: help;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.export-status {
+  min-height: 1.2em;
+}
+
+.export-status.is-success {
+  color: var(--accent-2);
+}
+
+.export-note {
+  margin-top: 6px;
 }
 
 .toggle {
@@ -698,7 +873,7 @@ body.controls-hidden #visum-canvas {
   }
 
   .controls-header span {
-    padding-bottom: 0;
+    padding-bottom: 10px;
   }
 }
 

@@ -16,6 +16,7 @@ type Controller struct {
 	doc        js.Value
 	engine     *app.Engine
 	renderer   *CanvasRenderer
+	exporter   *app.SVGExporter
 	elements   map[string]js.Value
 	callbacks  []js.Func
 	holdStates map[string]*holdState
@@ -35,6 +36,7 @@ func NewController(engine *app.Engine, renderer *CanvasRenderer) *Controller {
 		doc:        js.Global().Get("document"),
 		engine:     engine,
 		renderer:   renderer,
+		exporter:   app.NewSVGExporter(),
 		elements:   make(map[string]js.Value),
 		holdStates: make(map[string]*holdState),
 	}
@@ -52,6 +54,8 @@ func (c *Controller) Bind() {
 		"points-anim-enable", "points-anim-start", "points-anim-end", "points-anim-speed", "points-anim-loop", "points-anim-pingpong",
 		"live-readout",
 	})
+
+	c.bindSVGExport()
 
 	c.bindNumber("points", func(value float64) { c.engine.SetPointCount(int(value)) })
 	c.bindNumber("multiplier", func(value float64) { c.engine.SetMultiplier(value) })
@@ -98,9 +102,61 @@ func (c *Controller) Bind() {
 	c.bindAnimation("mult-anim", func(settings app.AnimationSettings) { c.engine.SetMultiplierAnimation(settings) })
 	c.bindAnimation("points-anim", func(settings app.AnimationSettings) { c.engine.SetPointAnimation(settings) })
 
+	c.bindRunningControl()
+	c.bindResetAnimations()
 	c.SyncFromDOM()
 	c.engine.SetRunning(true)
 	c.SyncToDOM()
+}
+
+func (c *Controller) bindSVGExport() {
+	if c.exporter == nil {
+		return
+	}
+	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		size := core.Size{}
+		includeReadout := false
+		if len(args) > 0 {
+			size.Width = args[0].Float()
+		}
+		if len(args) > 1 {
+			size.Height = args[1].Float()
+		}
+		if len(args) > 2 {
+			includeReadout = args[2].Bool()
+		}
+		if (size.Width <= 0 || size.Height <= 0) && c.renderer != nil {
+			size = c.renderer.Size()
+		}
+		svg := c.exporter.ExportWithReadout(c.engine.Snapshot().Params, size, includeReadout)
+		return svg
+	})
+	js.Global().Set("visumExportSVG", cb)
+	c.callbacks = append(c.callbacks, cb)
+}
+
+func (c *Controller) bindRunningControl() {
+	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		running := false
+		if len(args) > 0 {
+			running = args[0].Bool()
+		}
+		c.engine.SetRunning(running)
+		c.SyncToDOM()
+		return nil
+	})
+	js.Global().Set("visumSetRunning", cb)
+	c.callbacks = append(c.callbacks, cb)
+}
+
+func (c *Controller) bindResetAnimations() {
+	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		c.engine.ResetAnimationsToStart()
+		c.SyncToDOM()
+		return nil
+	})
+	js.Global().Set("visumResetAnimations", cb)
+	c.callbacks = append(c.callbacks, cb)
 }
 
 // SyncFromDOM pulls the current UI values into the engine.

@@ -45,6 +45,9 @@
           <p class="subtitle">
             A living plate of modular multiplication. Adjust the parameters to see the natural patterns and symmetries in numbers.
           </p>
+          <p class="subtitle export-note">
+            Capture stills or record a clip with the export tools in the controls.
+          </p>
           <a class="jump-link" href="#notes">READ MORE</a>
         </div>
       </header>
@@ -174,6 +177,107 @@
                   <input id="label-color" type="color" value="#3f3a34" />
                 </label>
               </div>
+            </div>
+          </details>
+
+          <details class="control-group" open>
+            <summary>EXPORT</summary>
+            <div class="control-content">
+              <div class="inline export-actions">
+                <button id="export-png" class="ghost" type="button">PNG</button>
+                <button id="export-webp" class="ghost" type="button">WEBP</button>
+                <button id="export-svg" class="ghost" type="button">SVG</button>
+              </div>
+              <div class="inline export-actions">
+                <button id="export-video" class="ghost" type="button">EXPORT VIDEO (REAL TIME)</button>
+                <button id="export-record" class="ghost" type="button">RECORD VIDEO (MANUAL)</button>
+                <button id="export-stop" class="ghost" type="button" disabled>STOP &amp; DOWNLOAD</button>
+                <button id="export-cancel" class="ghost" type="button" disabled>CANCEL EXPORT</button>
+              </div>
+              <p class="hint">Pause to freeze a frame before exporting still images.</p>
+              <p class="hint">Export video records a timed clip from the current animation bounds. Record video captures live playback until you stop.</p>
+              <p class="hint">Video exports run in your browser in real time. Keep this tab open and avoid refreshing.</p>
+              <p id="export-status" class="hint export-status" aria-live="polite"></p>
+              <div class="export-progress" aria-hidden="true">
+                <div class="export-progress-bar"></div>
+              </div>
+              <div id="export-guard" class="export-guard" aria-hidden="true">
+                <div class="export-guard-card">
+                  <p class="export-guard-title">EXPORT IN PROGRESS</p>
+                  <p class="export-guard-body">Leaving, refreshing, or changing controls can interrupt the recording.</p>
+                  <div class="inline export-guard-actions">
+                    <button id="guard-continue" class="ghost" type="button">CONTINUE RECORDING</button>
+                    <button id="guard-stop" class="ghost" type="button">STOP RECORDING</button>
+                  </div>
+                </div>
+              </div>
+              <details class="control-subgroup" open>
+                <summary>EXPORT SETTINGS</summary>
+                <div class="control-content">
+                  <label>
+                    <span class="label-row">IMAGE SCALE <span class="hint-icon" title="Scales the exported image above the on-screen size." aria-label="Scales the exported image above the on-screen size." role="img">?</span></span>
+                    <input id="export-scale" type="number" min="1" max="4" step="0.5" value="1" list="scale-options" />
+                  </label>
+                  <label class="toggle">
+                    <input id="export-include-readout" type="checkbox" checked />
+                    <span>INCLUDE K READOUT</span>
+                  </label>
+                  <label>
+                    <span class="label-row">VIDEO LOOPS <span class="hint-icon" title="Number of animation cycles to capture. Fractions stop partway through the final loop." aria-label="Number of animation cycles to capture. Fractions stop partway through the final loop." role="img">?</span></span>
+                    <input id="export-loops" type="number" min="0" max="100" step="0.1" value="0" />
+                  </label>
+                  <label>
+                    <span class="label-row">VIDEO FPS <span class="hint-icon" title="Frames per second for recordings. Uses typical camera frame rates." aria-label="Frames per second for recordings. Uses typical camera frame rates." role="img">?</span></span>
+                    <input id="export-fps" type="number" min="12" max="120" step="1" value="30" list="fps-options" />
+                  </label>
+                  <label>
+                    <span class="label-row">BITRATE (mbps) <span class="hint-icon" title="Higher bitrates produce cleaner video but larger files." aria-label="Higher bitrates produce cleaner video but larger files." role="img">?</span></span>
+                    <input id="export-bitrate" type="number" min="2" max="80" step="1" value="12" list="bitrate-options" />
+                  </label>
+                  <label>
+                    <span class="label-row">VIDEO RESOLUTION <span class="hint-icon" title="Sets the recording resolution. Higher values produce larger files." aria-label="Sets the recording resolution. Higher values produce larger files." role="img">?</span></span>
+                    <select id="export-resolution">
+                      <option value="auto">CANVAS (NATIVE)</option>
+                      <option value="1280x720">1280 x 720</option>
+                      <option value="1920x1080">1920 x 1080</option>
+                      <option value="2560x1440">2560 x 1440</option>
+                      <option value="3840x2160" selected>3840 x 2160</option>
+                    </select>
+                  </label>
+                  <p class="hint">Export uses the animation bounds set elsewhere in the controls.</p>
+                </div>
+              </details>
+              <datalist id="scale-options">
+                <option value="1"></option>
+                <option value="1.5"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+              </datalist>
+              <datalist id="fps-options">
+                <option value="12"></option>
+                <option value="15"></option>
+                <option value="24"></option>
+                <option value="25"></option>
+                <option value="30"></option>
+                <option value="48"></option>
+                <option value="50"></option>
+                <option value="60"></option>
+                <option value="72"></option>
+                <option value="90"></option>
+                <option value="96"></option>
+                <option value="120"></option>
+              </datalist>
+              <datalist id="bitrate-options">
+                <option value="2"></option>
+                <option value="4"></option>
+                <option value="8"></option>
+                <option value="12"></option>
+                <option value="20"></option>
+                <option value="35"></option>
+                <option value="50"></option>
+                <option value="80"></option>
+              </datalist>
             </div>
           </details>
 

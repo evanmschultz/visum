@@ -1,46 +1,31 @@
-# Visum Plan
+# Plan: Client-Side Real-Time Video Export
 
-## Goal
-Build a Go + WebAssembly web app that renders times-table circles with full user control over parameters, animation, and stepwise navigation. The app must be extensible, maintainable, testable, and use hexagonal architecture where appropriate.
+## Goals
+- Keep all still exports (PNG/WebP/SVG) client-side.
+- Provide **real-time** video export using `MediaRecorder`.
+- Add clear UX warnings to keep the tab open during export.
+- Maintain hexagonal architecture and ~80%+ test coverage.
 
 ## Scope
-- WASM renderer draws to an HTML canvas.
-- Full control over points, multiplier, rotation, line count, colors, and labels.
-- Animation controls for multiple variables with speed, loop, and ping-pong.
-- Step controls for forward/backward navigation.
-- Clean Go architecture with clear boundaries and tests for core math.
+1) **Image exports (client)**
+   - PNG/WebP from the live canvas.
+   - SVG from Go geometry via WASM bridge.
+2) **Video exports (client)**
+   - **Export video (real-time):** timed clip based on animation bounds.
+   - **Record video (manual):** live capture until stop.
 
-## Architecture
-- `internal/core`: Pure math and geometry; no IO or JS dependencies.
-- `internal/app`: Engine that owns state, applies updates, and produces frames.
-- `internal/adapter/web`: WASM DOM + Canvas adapter, UI binding, and rendering.
-- `cmd/visum`: WASM entrypoint.
-- `cmd/visum-serve`: Local static file server for development.
+## UX Plan
+- Progress bar + ETA for timed exports.
+- Indeterminate progress + elapsed timer for manual recordings.
+- Warning modal on any interaction while recording.
+- `beforeunload` warning to prevent accidental refresh/close.
 
-## Phases
-1. **Foundation**
-   - Create module, directory structure, and docs.
-   - Define domain types and frame model.
+## Implementation Steps
+1) Add progress/ETA UI and hover explainers.
+2) Add warning modal and `beforeunload` handler.
+3) Use animation bounds to calculate total duration for timed export.
+4) Keep tests passing; update docs.
 
-2. **Core + App Layer**
-   - Implement math for points and lines.
-   - Implement engine state, animations, and step controls.
-   - Add unit tests for geometry and line generation.
-
-3. **Web Adapter + UI**
-   - Build HTML/CSS UI and a Go WASM adapter.
-   - Wire inputs to engine state and render to canvas.
-   - Provide requestAnimationFrame loop and resize handling.
-
-4. **Polish**
-   - Document setup, build, and usage.
-   - Add MIT license and contribution guidelines.
-   - Ensure extensible structure for future features.
-
-## Deliverables
-- `PLAN.md` (this file)
-- `AGENTS.md`
-- `README.md`
-- `LICENSE` (MIT)
-- `CONTRIBUTING.md`
-- Fully working Go + WASM project with tests
+## Tests
+- Keep existing Go + WASM tests passing.
+- Maintain coverage targets (~80%).

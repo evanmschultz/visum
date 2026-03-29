@@ -14,15 +14,18 @@ func main() {
 	flag.Parse()
 
 	fs := http.FileServer(http.Dir(*dir))
-	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	staticHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(path.Clean(r.URL.Path), ".wasm") {
 			w.Header().Set("Content-Type", "application/wasm")
 		}
 		fs.ServeHTTP(w, r)
 	})
 
+	mux := http.NewServeMux()
+	mux.Handle("/", staticHandler)
+
 	log.Printf("serving %s on %s", *dir, *addr)
-	if err := http.ListenAndServe(*addr, handler); err != nil {
+	if err := http.ListenAndServe(*addr, mux); err != nil {
 		log.Fatal(err)
 	}
 }

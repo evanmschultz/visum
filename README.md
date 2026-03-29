@@ -12,7 +12,7 @@ Visum is a Go + WebAssembly app for exploring times-table circles (modular multi
 ## Getting Started
 
 ### Prerequisites
-- Go 1.22+
+- Go 1.25+
 
 ### Setup
 1. Copy the Go WASM runtime shim:
@@ -36,6 +36,11 @@ go run ./cmd/visum-serve
 4. Open the app in your browser at `http://localhost:8080`.
 
 ## Usage
+
+### Exporting
+- **PNG/WEBP/SVG** exports are generated locally in your browser.
+- **Export video (real time)** records a timed clip from the current animation bounds.
+- **Record video (manual)** captures live playback until you stop.
 
 ## Screenshots
 

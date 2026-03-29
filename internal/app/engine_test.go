@@ -228,6 +228,37 @@ func TestStepLinesFromAll(t *testing.T) {
 	}
 }
 
+func TestResetAnimationsToStart(t *testing.T) {
+	engine := NewEngine(core.DefaultParams())
+	engine.SetMultiplier(5)
+	engine.SetLineCount(50)
+	engine.SetPointCount(150)
+	engine.SetMultiplierAnimation(AnimationSettings{Enabled: true, Start: 2, End: 10, Speed: 1})
+	engine.SetLineAnimation(AnimationSettings{Enabled: true, Start: 20, End: 100, Speed: 5})
+	engine.SetPointAnimation(AnimationSettings{Enabled: true, Start: 80, End: 200, Speed: 2})
+
+	engine.ResetAnimationsToStart()
+	snapshot := engine.Snapshot()
+
+	if snapshot.Params.Multiplier != 2 {
+		t.Fatalf("expected multiplier to reset to 2, got %v", snapshot.Params.Multiplier)
+	}
+	if snapshot.Params.LineCount != 20 {
+		t.Fatalf("expected line count to reset to 20, got %d", snapshot.Params.LineCount)
+	}
+	if snapshot.Params.PointCount != 80 {
+		t.Fatalf("expected point count to reset to 80, got %d", snapshot.Params.PointCount)
+	}
+	if snapshot.Animations.Multiplier.Value != 2 {
+		t.Fatalf("expected multiplier animation value to reset to 2")
+	}
+	if snapshot.Animations.Lines.Value != 20 {
+		t.Fatalf("expected line animation value to reset to 20")
+	}
+	if snapshot.Animations.Points.Value != 80 {
+		t.Fatalf("expected points animation value to reset to 80")
+	}
+}
 
 func almostEqual(a, b float64) bool {
 	return math.Abs(a-b) < 1e-6

@@ -3,8 +3,8 @@
 package web
 
 import (
-	"testing"
 	"syscall/js"
+	"testing"
 
 	"github.com/evanschultz/visum/internal/core"
 )

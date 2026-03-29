@@ -3,8 +3,8 @@
 package web
 
 import (
-	"testing"
 	"syscall/js"
+	"testing"
 
 	"github.com/evanschultz/visum/internal/app"
 	"github.com/evanschultz/visum/internal/core"
@@ -16,46 +16,46 @@ func TestControllerSyncToDOM(t *testing.T) {
 	engine := app.NewEngine(core.DefaultParams())
 	controller := NewController(engine, nil)
 	controller.elements = map[string]js.Value{
-		"points":        newInput("0", false),
-		"multiplier":    newInput("0", false),
-		"rotation":      newInput("0", false),
-		"start-index":   newInput("0", false),
-		"line-count":    newInput("0", false),
-		"line-count-all": newInput("", true),
-		"show-circle":   newInput("", false),
-		"show-points":   newInput("", false),
-		"show-labels":   newInput("", false),
-		"label-step":    newInput("0", false),
-		"line-width":    newInput("0", false),
-		"point-radius":  newInput("0", false),
-		"bg-color":      newInput("#000000", false),
-		"line-color":    newInput("#000000", false),
-		"circle-color":  newInput("#000000", false),
-		"point-color":   newInput("#000000", false),
-		"label-color":   newInput("#000000", false),
-		"step-amount":   newInput("0", false),
-		"step-target":   newSelect("lines"),
-		"line-anim-enable":  newInput("", false),
-		"line-anim-start":   newInput("0", false),
-		"line-anim-end":     newInput("0", false),
-		"line-anim-speed":   newInput("0", false),
-		"line-anim-loop":    newInput("", false),
-		"line-anim-pingpong": newInput("", false),
-		"mult-anim-enable":  newInput("", false),
-		"mult-anim-start":   newInput("0", false),
-		"mult-anim-end":     newInput("0", false),
-		"mult-anim-speed":   newInput("0", false),
-		"mult-anim-loop":    newInput("", false),
-		"mult-anim-pingpong": newInput("", false),
-		"points-anim-enable":  newInput("", false),
-		"points-anim-start":   newInput("0", false),
-		"points-anim-end":     newInput("0", false),
-		"points-anim-speed":   newInput("0", false),
-		"points-anim-loop":    newInput("", false),
+		"points":               newInput("0", false),
+		"multiplier":           newInput("0", false),
+		"rotation":             newInput("0", false),
+		"start-index":          newInput("0", false),
+		"line-count":           newInput("0", false),
+		"line-count-all":       newInput("", true),
+		"show-circle":          newInput("", false),
+		"show-points":          newInput("", false),
+		"show-labels":          newInput("", false),
+		"label-step":           newInput("0", false),
+		"line-width":           newInput("0", false),
+		"point-radius":         newInput("0", false),
+		"bg-color":             newInput("#000000", false),
+		"line-color":           newInput("#000000", false),
+		"circle-color":         newInput("#000000", false),
+		"point-color":          newInput("#000000", false),
+		"label-color":          newInput("#000000", false),
+		"step-amount":          newInput("0", false),
+		"step-target":          newSelect("lines"),
+		"line-anim-enable":     newInput("", false),
+		"line-anim-start":      newInput("0", false),
+		"line-anim-end":        newInput("0", false),
+		"line-anim-speed":      newInput("0", false),
+		"line-anim-loop":       newInput("", false),
+		"line-anim-pingpong":   newInput("", false),
+		"mult-anim-enable":     newInput("", false),
+		"mult-anim-start":      newInput("0", false),
+		"mult-anim-end":        newInput("0", false),
+		"mult-anim-speed":      newInput("0", false),
+		"mult-anim-loop":       newInput("", false),
+		"mult-anim-pingpong":   newInput("", false),
+		"points-anim-enable":   newInput("", false),
+		"points-anim-start":    newInput("0", false),
+		"points-anim-end":      newInput("0", false),
+		"points-anim-speed":    newInput("0", false),
+		"points-anim-loop":     newInput("", false),
 		"points-anim-pingpong": newInput("", false),
-		"play-toggle":   newInput("", false),
-		"reverse-toggle": newInput("", false),
-		"live-readout":  newInput("", false),
+		"play-toggle":          newInput("", false),
+		"reverse-toggle":       newInput("", false),
+		"live-readout":         newInput("", false),
 	}
 
 	controller.SyncToDOM()
@@ -80,42 +80,42 @@ func TestControllerSyncFromDOM(t *testing.T) {
 	engine := app.NewEngine(core.DefaultParams())
 	controller := NewController(engine, nil)
 	controller.elements = map[string]js.Value{
-		"points":        newInput("120", false),
-		"multiplier":    newInput("3.5", false),
-		"rotation":      newInput("15", false),
-		"start-index":   newInput("7", false),
-		"line-count":    newInput("80", false),
-		"line-count-all": newInput("", true),
-		"show-circle":   newInput("", false),
-		"show-points":   newInput("", true),
-		"show-labels":   newInput("", true),
-		"label-step":    newInput("5", false),
-		"line-width":    newInput("2", false),
-		"point-radius":  newInput("1", false),
-		"bg-color":      newInput("#010101", false),
-		"line-color":    newInput("#020202", false),
-		"circle-color":  newInput("#030303", false),
-		"point-color":   newInput("#040404", false),
-		"label-color":   newInput("#050505", false),
-		"step-amount":   newInput("2", false),
-		"step-target":   newSelect("points"),
-		"line-anim-enable":  newInput("", true),
-		"line-anim-start":   newInput("0", false),
-		"line-anim-end":     newInput("50", false),
-		"line-anim-speed":   newInput("5", false),
-		"line-anim-loop":    newInput("", true),
-		"line-anim-pingpong": newInput("", false),
-		"mult-anim-enable":  newInput("", true),
-		"mult-anim-start":   newInput("1", false),
-		"mult-anim-end":     newInput("4", false),
-		"mult-anim-speed":   newInput("0.5", false),
-		"mult-anim-loop":    newInput("", false),
-		"mult-anim-pingpong": newInput("", true),
-		"points-anim-enable":  newInput("", true),
-		"points-anim-start":   newInput("10", false),
-		"points-anim-end":     newInput("30", false),
-		"points-anim-speed":   newInput("3", false),
-		"points-anim-loop":    newInput("", false),
+		"points":               newInput("120", false),
+		"multiplier":           newInput("3.5", false),
+		"rotation":             newInput("15", false),
+		"start-index":          newInput("7", false),
+		"line-count":           newInput("80", false),
+		"line-count-all":       newInput("", true),
+		"show-circle":          newInput("", false),
+		"show-points":          newInput("", true),
+		"show-labels":          newInput("", true),
+		"label-step":           newInput("5", false),
+		"line-width":           newInput("2", false),
+		"point-radius":         newInput("1", false),
+		"bg-color":             newInput("#010101", false),
+		"line-color":           newInput("#020202", false),
+		"circle-color":         newInput("#030303", false),
+		"point-color":          newInput("#040404", false),
+		"label-color":          newInput("#050505", false),
+		"step-amount":          newInput("2", false),
+		"step-target":          newSelect("points"),
+		"line-anim-enable":     newInput("", true),
+		"line-anim-start":      newInput("0", false),
+		"line-anim-end":        newInput("50", false),
+		"line-anim-speed":      newInput("5", false),
+		"line-anim-loop":       newInput("", true),
+		"line-anim-pingpong":   newInput("", false),
+		"mult-anim-enable":     newInput("", true),
+		"mult-anim-start":      newInput("1", false),
+		"mult-anim-end":        newInput("4", false),
+		"mult-anim-speed":      newInput("0.5", false),
+		"mult-anim-loop":       newInput("", false),
+		"mult-anim-pingpong":   newInput("", true),
+		"points-anim-enable":   newInput("", true),
+		"points-anim-start":    newInput("10", false),
+		"points-anim-end":      newInput("30", false),
+		"points-anim-speed":    newInput("3", false),
+		"points-anim-loop":     newInput("", false),
 		"points-anim-pingpong": newInput("", true),
 	}
 
@@ -277,11 +277,11 @@ func TestControllerSetters(t *testing.T) {
 	engine := app.NewEngine(core.DefaultParams())
 	controller := NewController(engine, nil)
 	controller.elements = map[string]js.Value{
-		"points":        newInput("0", false),
+		"points":         newInput("0", false),
 		"line-count-all": newInput("", false),
-		"bg-color":      newInput("#000000", false),
-		"step-target":   newSelect("lines"),
-		"live-readout":  newInput("", false),
+		"bg-color":       newInput("#000000", false),
+		"step-target":    newSelect("lines"),
+		"live-readout":   newInput("", false),
 	}
 
 	controller.setInputValue("points", 12)
@@ -384,6 +384,60 @@ func TestBindStepButtonHold(t *testing.T) {
 	}
 }
 
+func TestBindSVGExport(t *testing.T) {
+	js.Global().Set("document", js.ValueOf(map[string]interface{}{"activeElement": js.Null()}))
+
+	engine := app.NewEngine(core.DefaultParams())
+	renderer := &CanvasRenderer{cssSize: core.Size{Width: 400, Height: 300}}
+	controller := NewController(engine, renderer)
+	controller.bindSVGExport()
+
+	exportFn := js.Global().Get("visumExportSVG")
+	if exportFn.IsUndefined() || exportFn.IsNull() {
+		t.Fatalf("expected visumExportSVG to be defined")
+	}
+
+	result := exportFn.Invoke(0, 0, true)
+	if result.Type() != js.TypeString {
+		t.Fatalf("expected visumExportSVG to return a string")
+	}
+	if result.String() == "" {
+		t.Fatalf("expected SVG string to be non-empty")
+	}
+}
+
+func TestBindResetAnimations(t *testing.T) {
+	js.Global().Set("document", js.ValueOf(map[string]interface{}{"activeElement": js.Null()}))
+
+	engine := app.NewEngine(core.DefaultParams())
+	engine.SetMultiplierAnimation(app.AnimationSettings{Enabled: true, Start: 2, End: 10, Speed: 1})
+	engine.SetLineAnimation(app.AnimationSettings{Enabled: true, Start: 20, End: 80, Speed: 4})
+	engine.SetPointAnimation(app.AnimationSettings{Enabled: true, Start: 120, End: 200, Speed: 2})
+	engine.SetMultiplier(7)
+	engine.SetLineCount(40)
+	engine.SetPointCount(180)
+
+	controller := NewController(engine, nil)
+	controller.bindResetAnimations()
+
+	resetFn := js.Global().Get("visumResetAnimations")
+	if resetFn.IsUndefined() || resetFn.IsNull() {
+		t.Fatalf("expected visumResetAnimations to be defined")
+	}
+	resetFn.Invoke()
+
+	snapshot := engine.Snapshot()
+	if snapshot.Params.Multiplier != 2 {
+		t.Fatalf("expected multiplier reset to 2, got %v", snapshot.Params.Multiplier)
+	}
+	if snapshot.Params.LineCount != 20 {
+		t.Fatalf("expected line count reset to 20, got %d", snapshot.Params.LineCount)
+	}
+	if snapshot.Params.PointCount != 120 {
+		t.Fatalf("expected point count reset to 120, got %d", snapshot.Params.PointCount)
+	}
+}
+
 func TestSyncAnimationMissingElements(t *testing.T) {
 	controller := NewController(app.NewEngine(core.DefaultParams()), nil)
 	controller.elements = map[string]js.Value{}
@@ -400,11 +454,11 @@ func TestAnimationBindings(t *testing.T) {
 
 	handlers := map[string]map[string]js.Value{}
 	controller.elements = map[string]js.Value{
-		"line-anim-enable":  stubElement(t, "", true, newHandlerMap(handlers, "enable")),
-		"line-anim-start":   stubElement(t, "0", false, newHandlerMap(handlers, "start")),
-		"line-anim-end":     stubElement(t, "10", false, newHandlerMap(handlers, "end")),
-		"line-anim-speed":   stubElement(t, "2", false, newHandlerMap(handlers, "speed")),
-		"line-anim-loop":    stubElement(t, "", true, newHandlerMap(handlers, "loop")),
+		"line-anim-enable":   stubElement(t, "", true, newHandlerMap(handlers, "enable")),
+		"line-anim-start":    stubElement(t, "0", false, newHandlerMap(handlers, "start")),
+		"line-anim-end":      stubElement(t, "10", false, newHandlerMap(handlers, "end")),
+		"line-anim-speed":    stubElement(t, "2", false, newHandlerMap(handlers, "speed")),
+		"line-anim-loop":     stubElement(t, "", true, newHandlerMap(handlers, "loop")),
 		"line-anim-pingpong": stubElement(t, "", false, newHandlerMap(handlers, "pingpong")),
 	}
 

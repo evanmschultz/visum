@@ -13,8 +13,8 @@ import (
 
 // CanvasRenderer draws frames onto an HTML canvas.
 type CanvasRenderer struct {
-	canvas js.Value
-	ctx    js.Value
+	canvas  js.Value
+	ctx     js.Value
 	cssSize core.Size
 	fonts   string
 }
